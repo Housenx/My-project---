@@ -1,43 +1,58 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <string.h>
-#include <stdlib.h>
 
-void pont(int *a, int b){
-    int i;
-    int vetnew[b];
-    
-    for(i = 0;i < b;i++){
-        vetnew[b - 1 - i] = *(a + i);
-    }
+struct stado{
+    int pol;
+    int bomb;
+    int law;
+    struct stado* prox;
+};
 
-    printf("\n");
-
-    for(i = 0; i < b; i++){
-        *(a + i) = vetnew[i]; 
-    }
-    
-    system("cls");
-    printf("----Vetor invertido----\n");
-
-    for(i = 0; i < b; i++){
-        printf("%d ", *a);
-        a++;
-    }
-
-}
+typedef struct stado stado;
 
 int main(){
-    int a;
-    
-    printf("escolha o tamanho do veltor:\n");
-    scanf("%d", &a);
-    fflush(stdin);
+    char a[10];
 
-    int vet[a];
-    for(int i = 0;i < a;i++){
-        printf("Digite o valor do vetor %d\n", 1+i);
-        scanf("%d", &vet[i]);
+    stado SE, BA, PE, AL;
+
+    SE.prox = &BA;
+    BA.prox = &PE;
+    PE.prox = &AL;
+    AL.prox = NULL;
+
+    SE.pol = 190;
+    SE.bomb = 193;
+    SE.law = 181;
+
+    BA.pol = 190;
+    BA.bomb = 192;
+    BA.law = 180;
+
+    PE.pol = 190;
+    PE.bomb = 191;
+    PE.law = 182;
+
+    AL.pol = 190;
+    AL.bomb = 190;
+    AL.law = 190;
+
+    stado* atual = &SE;
+
+    while(true){
+        printf("\t-----Numeros de emergencia-----\n");
+        printf("-----deseja ver numeros emergenciais dos estados?----\n");
+        printf("\t(sim) - (nao) ?\n");
+
+        scanf("%s", a);
+        printf("\e[1;1H\e[2J");
+        if(strcmp(a, "sim") == 0)
+        {
+            while(atual != NULL)
+            {
+                printf("- POLICIA: %d - BOMBEIROS: %d - JUIZ: %d \n", atual->pol, atual->bomb, atual->law);
+                atual = atual->prox;
+            }
+        }
     }
-    pont(vet, a);
-
 }
